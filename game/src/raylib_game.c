@@ -173,9 +173,18 @@ static void UpdateDrawFrame(void) {
 		} break;
 		case JT: {
 			UpdateJtScreen();
+			if (FinishJtScreen() == ALGORITHM)
+				TransitionToScreen(ALGORITHM);
 			if (FinishJtScreen() == TITLE)
 				TransitionToScreen(TITLE);
 
+		case LEX: {
+			UpdateLexScreen();
+			if (FinishLexScreen() == ALGORITHM)
+				TransitionToScreen(ALGORITHM);
+			if (FinishLexScreen() == TITLE)
+				TransitionToScreen(TITLE);
+		}
 		} break;
 		default:
 			break;

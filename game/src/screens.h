@@ -46,3 +46,7 @@ void DrawLexScreen(void);
 void UnloadLexScreen(void);
 int FinishLexScreen(void);
 
+void DrawCharacterLex(int pos, char znak[2], int col);
+void PauseLex(int curLine, int piv, int indk);
+void DrawVariLex(int piv, int indk);
+void DrawPermLex(int col);

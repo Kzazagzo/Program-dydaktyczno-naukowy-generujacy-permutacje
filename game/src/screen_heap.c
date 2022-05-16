@@ -3,24 +3,23 @@
 
 static int curLn = 1;
 static int finishScreen = 0;
-static int* arr = NULL;
 static bool cp = true;
 static bool end = false;
 
 void InitHeapScreen(void) {
 	finishScreen = 0;
 	curLn = 1;
-	int* arr = NULL;
 	cp = true;
 	end = false;
-	arr = malloc(sizeof(int) * AppendAlgorithmLenght());
-	for (int i = 0; i != AppendAlgorithmLenght(); i++)
-		arr[i] = i + 1;
 }
 
 void UpdateHeapScreen(void) {
+	int* arr = malloc(sizeof(int) * AppendAlgorithmLenght());
+	for (int i = 0; i != AppendAlgorithmLenght(); i++)
+		arr[i] = i + 1;
 	heap(arr, AppendAlgorithmLenght(), AppendAlgorithmLenght());
 	cp = false;
+	free(arr);
 	finishScreen = TITLE;
 }
 
@@ -40,7 +39,7 @@ void DrawHeapScreen(void) {
 	}
 }
 
-void DrawPermHeap(int col) {
+void DrawPermHeap(int* arr,int col) {
 	for (int i = 0; i != AppendAlgorithmLenght(); i++) {
 		char znak[2] = { arr[i] + 48,'\0' };
 		DrawCharacterHeap(i, znak, col);
@@ -60,14 +59,14 @@ void DrawVariHeap(int len, int i) {
 	}
 }
 
-void PauseHeap(int curLine, int len, int i) {
+void PauseHeap(int* arr,int curLine, int len, int i) {
 	curLn = curLine;
 	if (!end) {
 		while (1) {
 			BeginDrawing();
 			ClearBackground(RAYWHITE);
 			DrawHeapScreen();
-			DrawPermHeap(curLine);
+			DrawPermHeap(arr, curLine);
 			DrawVariHeap(len, i);
 			EndDrawing();
 			if (IsKeyDown(KEY_F10)) {
@@ -93,7 +92,7 @@ void DrawCharacterHeap(int pos, char znak[2], int col) {
 }
 
 void UnloadHeapScreen(void) {
-	free(arr);
+	;
 }
 
 int FinishHeapScreen(void) {
@@ -101,18 +100,22 @@ int FinishHeapScreen(void) {
 
 }
 
-void heap(int tab[], size_t len, size_t total) {
-	PauseHeap(1, len, -1);
-	if (len == 1) 
-		PauseHeap(2, len, -1);
-	PauseHeap(3, len, -1);
+void heap(int* arr, size_t len, size_t total) {
+	PauseHeap(arr, 1, len, -1);
+	if (len == 1) {
+		for (int i = 0; i != AppendAlgorithmLenght(); i++)
+			printf("%i ", arr[i]);
+		printf("\n");
+		PauseHeap(arr, 2, len, -1);
+	}
+	PauseHeap(arr, 3, len, -1);
 	for (int i = 0; i != len; i++) {
-		PauseHeap(4, len, i);
-		heap(tab, len - 1, total);
-		PauseHeap(5, len, i);
+		PauseHeap(arr, 4, len, i);
+		heap(arr, len - 1, total);
+		PauseHeap(arr, 5, len, i);
 		if (i < len - 1) {
-			PauseHeap(6, len, i);
-			len % 2 == 0 ? swap(&tab[i], &tab[len - 1]) : swap(&tab[0], &tab[len - 1]);
+			PauseHeap(arr, 6, len, i);
+			len % 2 == 0 ? swap(&arr[i], &arr[len - 1]) : swap(&arr[0], &arr[len - 1]);
 		}
 	}
 }
