@@ -1,7 +1,7 @@
 #define SCREENS_H
 #include "Header.h"
 
-typedef enum GameScreen { NONE = 0, TITLE, ALGORITHM, HEAP, JT , LEX} GameScreen;
+typedef enum GameScreen { NONE = 0, TITLE, ALGORITHM, HEAP, JT , LEX, PLOT} GameScreen;
 
 extern GameScreen currentScreen;
 extern Font font;
@@ -50,3 +50,9 @@ void DrawCharacterLex(int pos, char znak[2], int col);
 void PauseLex(int curLine, int piv, int indk);
 void DrawVariLex(int piv, int indk);
 void DrawPermLex(int col);
+
+void InitPlotScreen(void);
+void UpdatePlotScreen(void);
+void DrawPlotScreen(void);
+void UnloadPlotScreen(void);
+int FinishPlotScreen(void);

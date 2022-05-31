@@ -130,8 +130,5 @@ void lex(int* arr,size_t len) {
 		rev(arr, len - 1, piv); // Odwróæ ci¹g najmniejszych elementów
 		PauseLex(arr, 8, piv, indk);
 		PauseLex(arr, 9, piv, indk);
-		for (int i = 0; i != AppendAlgorithmLenght(); i++)
-			printf("%i ", arr[i]);
-		printf("\n");
 	}
 }

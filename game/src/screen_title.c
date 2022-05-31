@@ -9,10 +9,10 @@ void InitTitleScreen(void) {
 
 void UpdateTitleScreen(void) {
     if (IsKeyPressed(KEY_ONE)) {
-        finishScreen = 1;   // Algorytmy
+        finishScreen = ALGORITHM;   
     }
     if (IsKeyPressed(KEY_TWO)) {
-        finishScreen = 2;   // Wykresy
+        finishScreen = PLOT;   
     }
 }
 
@@ -29,7 +29,6 @@ void UnloadTitleScreen(void){
     ;
 }
 
-int FinishTitleScreen(void)
-{
+int FinishTitleScreen(void) {
     return finishScreen;
 }

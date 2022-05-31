@@ -103,9 +103,6 @@ int FinishHeapScreen(void) {
 void heap(int* arr, size_t len, size_t total) {
 	PauseHeap(arr, 1, len, -1);
 	if (len == 1) {
-		for (int i = 0; i != AppendAlgorithmLenght(); i++)
-			printf("%i ", arr[i]);
-		printf("\n");
 		PauseHeap(arr, 2, len, -1);
 	}
 	PauseHeap(arr, 3, len, -1);

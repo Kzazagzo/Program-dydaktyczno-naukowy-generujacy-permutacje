@@ -16,7 +16,6 @@ void InitJtScreen(void) {
 	atp = malloc(sizeof(struct arrow_pair) * AppendAlgorithmLenght());
 	for (int i = 0; i != AppendAlgorithmLenght(); i++) {
 		atp[i].ele = i + 1;
-		printf("%i ", atp[i].ele);
 		atp[i].arr = true;
 	}
 }
@@ -26,6 +25,7 @@ void UpdateJtScreen(void) {
 	SJT(AppendAlgorithmLenght());
 	cp = false;
 	finishScreen = TITLE;
+	free(atp);
 }
 
 
@@ -123,7 +123,7 @@ void DrawArrowJt(int dir, int pos) {
 }
 
 void UnloadJtScreen(void) {
-	free(atp);
+	;
 }
 
 int FinishJtScreen(void) {
@@ -137,30 +137,6 @@ int FinishJtScreen(void) {
 // 1. Znajdź największą mobilną liczbę
 // 2. Zmień najwięszką mobilbą z tą na którą wskazuję
 // 3. Zmień kierunek strzałki liczb większych niż n
-
-int maxCheck(struct arrow_pair* atp, int maxMobile, int len) {
-	if (maxMobile == -1)
-		maxMobile = len;
-	else
-		if (atp[maxMobile].ele < atp[len].ele)
-			maxMobile = len;
-	return maxMobile;
-}
-
-int bmn(struct arrow_pair* atp, size_t len) {
-	int maxMobile = -1;
-	if (!atp[0].arr && atp[0].ele > atp[1].ele)
-		maxMobile = 0;
-	for (int i = 1; i != len - 1; i++) {
-		if (atp[i].arr && atp[i].ele > atp[i - 1].ele) 
-			maxMobile = maxCheck(atp, maxMobile, i);
-		if (!atp[i].arr && atp[i].ele > atp[i + 1].ele) 
-			maxMobile = maxCheck(atp, maxMobile, i);
-	}
-	if (atp[len - 1].arr && atp[len - 1].ele > atp[len - 2].ele)
-		maxMobile = maxCheck(atp, maxMobile, len - 1);
-	return maxMobile == -1 ? -1 : atp[maxMobile].ele;
-}
 
 void SJT(size_t len) {
 	int n = len;
@@ -191,7 +167,7 @@ void SJT(size_t len) {
 			PauseJt(8, n, -1, i);
 		}
 		PauseJt(9, n, -1, -1);
-		n = bmn(atp, len); //#TODO
+		n = bmn(atp, len); 
 		PauseJt(10,n, -1, -1);
 		if (end)
 			break;

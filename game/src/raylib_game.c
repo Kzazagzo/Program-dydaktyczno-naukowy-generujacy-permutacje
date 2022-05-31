@@ -1,7 +1,6 @@
 #include "raylib.h"
 #include "screens.h"
 
-
 GameScreen currentScreen = 0;
 Font font = { 0 };
 
@@ -41,6 +40,7 @@ int main(void) {
 	case HEAP: UnloadHeapScreen(); break;
 	case JT: UnloadJtScreen(); break;
 	case LEX: UnloadLexScreen(); break;
+	case PLOT: UnloadPlotScreen(); break;
 	default: break;
 	}
 
@@ -57,6 +57,7 @@ static void ChangeToScreen(int screen) {
 	case HEAP: UnloadHeapScreen(); break;
 	case JT: UnloadJtScreen(); break;
 	case LEX: UnloadLexScreen(); break;
+	case PLOT: UnloadPlotScreen(); break;
 	default: break;
 	}
 
@@ -66,6 +67,7 @@ static void ChangeToScreen(int screen) {
 	case HEAP: InitHeapScreen(); break;
 	case JT: InitJtScreen(); break;
 	case LEX: InitLexScreen(); break;
+	case PLOT: InitPlotScreen(); break;
 	default: break;
 	}
 
@@ -86,29 +88,28 @@ static void UpdateTransition(void) {
 
 		if (transAlpha > 1.01f) {
 			transAlpha = 1.0f;
-			// Unload current screen
 			switch (transFromScreen) {
 			case TITLE: UnloadTitleScreen(); break;
 			case ALGORITHM: UnloadAlgorithmScreen(); break;
 			case HEAP: UnloadHeapScreen(); break;
 			case JT: UnloadJtScreen(); break;
 			case LEX: UnloadLexScreen(); break;
+			case PLOT: UnloadPlotScreen(); break;
 			default: break;
 			}
 
-			// Load next screen
 			switch (transToScreen) {
 			case TITLE: InitTitleScreen(); break;
 			case ALGORITHM: InitAlgorithmScreen(); break;
 			case HEAP: InitHeapScreen(); break;
 			case JT: InitJtScreen(); break;
 			case LEX: InitLexScreen(); break;
+			case PLOT: InitPlotScreen(); break;
 			default: break;
 			}
 
 			currentScreen = transToScreen;
 
-			// Activate fade out effect to next loaded screen
 			transFadeOut = true;
 		}
 	}
@@ -127,13 +128,10 @@ static void UpdateTransition(void) {
 	}
 }
 
-// Draw transition effect (full-screen rectangle)
-static void DrawTransition(void)
-{
+static void DrawTransition(void) {
 	DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), Fade(BLACK, transAlpha));
 }
 
-// Update and draw game frame
 static void UpdateDrawFrame(void) {
 	if (!onTransition) {
 		switch (currentScreen) {
@@ -141,11 +139,10 @@ static void UpdateDrawFrame(void) {
 		{
 			UpdateTitleScreen();
 
-			if (FinishTitleScreen() == 1)
+			if (FinishTitleScreen() == ALGORITHM)
 				TransitionToScreen(ALGORITHM);
-			// else if (FinishTitleScreen() == 2) 
-			 //    TransitionToScreen(HEAP);     // TODO WYKRESY
-
+			else if (FinishTitleScreen() == PLOT) 
+			    TransitionToScreen(PLOT);    
 		}
 		break;
 		case ALGORITHM:
@@ -177,15 +174,22 @@ static void UpdateDrawFrame(void) {
 				TransitionToScreen(ALGORITHM);
 			if (FinishJtScreen() == TITLE)
 				TransitionToScreen(TITLE);
-
+		}break;
 		case LEX: {
 			UpdateLexScreen();
 			if (FinishLexScreen() == ALGORITHM)
 				TransitionToScreen(ALGORITHM);
 			if (FinishLexScreen() == TITLE)
 				TransitionToScreen(TITLE);
-		}
-		} break;
+		}break;
+		case PLOT: 
+		{
+			UpdatePlotScreen();
+			if (FinishPlotScreen == ALGORITHM)
+				TransitionToScreen(ALGORITHM);
+			if (FinishPlotScreen == TITLE)
+				TransitionToScreen(TITLE);
+		}break;
 		default:
 			break;
 		}
@@ -200,6 +204,7 @@ static void UpdateDrawFrame(void) {
 	case HEAP: DrawHeapScreen(); break;
 	case JT: DrawJtScreen(); break;
 	case LEX: DrawLexScreen(); break;
+	case PLOT: DrawPlotScreen(); break;
 	default: break;
 	}
 	if (onTransition)
